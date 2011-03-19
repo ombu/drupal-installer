@@ -6,10 +6,10 @@ api = 2
 projects[] = drupal
 
 ; Profiles
-projects[ombubase][download][type]   = git
-projects[ombubase][download][url]    = git@github.com:ombu/drupal-ombubase.git
-projects[ombubase][download][branch] = d7
-projects[ombubase][type]             = profile
+projects[ombuprofile][download][type]   = git
+projects[ombuprofile][download][url]    = git@github.com:ombu/drupal-ombuprofile.git
+projects[ombuprofile][download][branch] = d7
+projects[ombuprofile][type]             = profile
 
 ; Contrib Modules
 projects[views_bulk_operations][subdir] = contrib
