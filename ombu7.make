@@ -44,6 +44,5 @@ projects[ombuadmin][download][branch] = d7
 projects[ombuadmin][type]             = theme
 
 ; Libraries
-libraries[tinymce][download][type] = git
-libraries[tinymce][download][url]  = https://github.com/tinymce/tinymce.git
-libraries[tinymce][download][tag]  = 3.4
+libraries[tinymce][download][type] = get
+libraries[tinymce][download][url]  = https://github.com/downloads/tinymce/tinymce/tinymce_3.3.9.4.zip
