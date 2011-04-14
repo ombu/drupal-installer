@@ -1,0 +1,174 @@
+#!/bin/sh
+
+################################################################################
+# Functions
+################################################################################
+usage()
+{
+cat << Help
+usage: `basename $0` [OPTION]... [DIRECTORY]
+
+Install OMBU optimized Drupal site in [DIRECTORY] or the current directory if
+no directory is given.
+
+Options:
+
+  -d [NAME]    Database name. If site is set to install and this option isn't given,
+               then you will be prompted to enter this during the install process.
+  -u [USER]    Database user. If site is set to install and this option isn't given,
+               then you will be prompted to enter this during the install process.
+  -p           Database password.
+  -s [SITE]    Site name. If not set, then will default to "Site Name"
+  -e [EMAIL]   Site email. If not set, then will default to "example@ombuweb.com"
+
+Misc:
+  -x           Install dev modules and data.
+  -n           No install; don't install Drupal site after downloading it
+  -h           This help
+  
+Help
+}
+
+# define temp directory
+# Warning: this directory will be removed at the end of the script, so make sure
+# it's a subdirectory
+TMP="/tmp/drupalbuild"
+if [ ! -d $TMP ]; then
+  mkdir $TMP
+fi
+
+################################################################################
+# Command line args
+################################################################################
+
+INSTALLDIR='.'
+if [ $1 ]; then
+  INSTALLDIR=$1
+fi
+
+while getopts ":d:u:s:e:pxnh" opt
+do
+    case $opt in
+    d)
+      DBNAME=$OPTARG
+      ;;
+    u)
+      DBUSER=$OPTARG
+      ;;
+    p)
+      echo "Enter database password for user $DBUSER"
+      stty -echo; read -r DBPASS; stty echo  # won't display what user types
+      ;;
+
+    n)
+      NOINSTALL=true
+      ;;
+    h)
+      usage
+      exit
+      ;;
+    \?)
+      echo "Invalid option: -$OPTARG"
+      exit
+      ;;
+    esac
+done
+
+
+################################################################################
+# Drupal site build
+################################################################################
+echo "+ Building Drupal code"
+
+# Create install directory if it doesn't exist
+if [ ! -d $INSTALLDIR ]; then
+  mkdir $INSTALLDIR
+fi
+if [ ! -d $INSTALLDIR/private ]; then
+  mkdir $INSTALLDIR/private
+fi
+
+# Download make file (can't run it off of github behind private repo)
+git clone git@github.com:ombu/drupal-installer.git $TMP/drupal-installer
+
+# Build drupal site with make file, keeping repo directories
+drush make --no-clean $TMP/drupal-installer/ombu7.make $INSTALLDIR/public
+
+# Build reset script
+cat << ResetScript > $INSTALLDIR/private/reset.sh 
+#! /bin/sh
+
+################################################################################
+# Command line args
+################################################################################
+# set flag vars to empty
+noinstall=
+
+while getopts :n opt
+do
+    case \$opt in
+    n)     noinstall=true
+           ;;
+    esac
+done
+
+################################################################################
+# Variables needed to launch a Drupal site
+################################################################################
+PROFILE=ombubase
+DBNAME=$DBNAME
+DBUSER=$DBUSER
+DBPW=$DBPASS
+SITENAME="$SITENAME"
+SITEMAIL="$SITEMAIL"
+ACCTNAME=system
+ACCTPW=pass
+ACCTMAIL="$SITEMAIL"
+
+################################################################################
+# Should not need to change code below
+################################################################################
+
+if [ \$noinstall ]; then
+    echo "Called with noinstall option. Exiting before running installer.";
+    exit 0;
+fi
+
+echo "+ Running Drupal installer..."
+drush si --yes \$PROFILE             \
+    --db-url="mysqli://\$DBUSER:\$DBPW@localhost/\$DBNAME" \
+    --site-name="\$SITENAME"         \
+    --site-mail=\$SITEMAIL           \
+    --account-name=\$ACCTNAME        \
+    --account-pass=\$ACCTPW          \
+    --account-mail=\$ACCTMAIL        \
+    --dbuser=\$DBUSER
+ResetScript 
+chmod 775 $INSTALLDIR/private/reset.sh
+
+# Create new repo and first commit
+echo "+ Creating initial mercurial repo"
+cd $INSTALLDIR
+hg init
+
+# .hgignore file
+cat << HgIgnore > .hgignore
+sites/default/settings.php
+sites/default/files
+.*\.git
+HgIgnore
+
+hg add
+
+PROFILEREV=`git --git-dir=public/profiles/ombuprofile rev-parse HEAD`
+hg ci -m "Initial install of OMBU Base rev# $PROFILEREV"
+
+# Run reset script in order to install site
+echo "+ Installing site"
+#cd public
+#../private/reset.sh
+
+################################################################################
+# Cleanup
+################################################################################
+# rm -rf $TMP
