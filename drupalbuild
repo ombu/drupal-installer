@@ -17,7 +17,7 @@ Options:
                then you will be prompted to enter this during the install process.
   -u [USER]    Database user. If site is set to install and this option isn't given,
                then you will be prompted to enter this during the install process.
-  -p           Database password.
+  -p           Prompt for database password.
   -s [SITE]    Site name. If not set, then will default to "Site Name"
   -e [EMAIL]   Site email. If not set, then will default to "example@ombuweb.com"
 
@@ -41,11 +41,6 @@ fi
 # Command line args
 ################################################################################
 
-INSTALLDIR='.'
-if [ $1 ]; then
-  INSTALLDIR=$1
-fi
-
 while getopts ":d:u:s:e:pxnh" opt
 do
     case $opt in
@@ -56,12 +51,20 @@ do
       DBUSER=$OPTARG
       ;;
     p)
-      echo "Enter database password for user $DBUSER"
+      echo "Enter database password for user $DBUSER:"
       stty -echo; read -r DBPASS; stty echo  # won't display what user types
       ;;
-
+    s)
+      SITENAME=$OPTARG
+      ;;
+    e)
+      SITEMAIL=$OPTARG
+      ;;
     n)
       NOINSTALL=true
+      ;;
+    x)
+      DEV=true
       ;;
     h)
       usage
@@ -73,6 +76,21 @@ do
       ;;
     esac
 done
+shift $(($OPTIND - 1))
+
+INSTALLDIR='.'
+if [ $* ]; then
+  INSTALLDIR=$*
+
+  # Create install directory if it doesn't exist
+  echo "+ Creating install directory $INSTALLDIR"
+  if [ ! -d $INSTALLDIR ]; then
+    mkdir $INSTALLDIR
+  fi
+  if [ ! -d $INSTALLDIR/private ]; then
+    mkdir $INSTALLDIR/private
+  fi
+fi
 
 
 ################################################################################
@@ -80,71 +98,28 @@ done
 ################################################################################
 echo "+ Building Drupal code"
 
-# Create install directory if it doesn't exist
-if [ ! -d $INSTALLDIR ]; then
-  mkdir $INSTALLDIR
-fi
-if [ ! -d $INSTALLDIR/private ]; then
-  mkdir $INSTALLDIR/private
-fi
-
 # Download make file (can't run it off of github behind private repo)
-git clone git@github.com:ombu/drupal-installer.git $TMP/drupal-installer
+if [ ! -d $TMP/drupal-installer ]; then
+  git clone git@github.com:ombu/drupal-installer.git $TMP/drupal-installer
+fi
 
 # Build drupal site with make file, keeping repo directories
-drush make --no-clean $TMP/drupal-installer/ombu7.make $INSTALLDIR/public
+# drush make --no-clean --working-copy $TMP/drupal-installer/ombu7.make "$INSTALLDIR/public"
+
+echo "+ Drupal build complete"
 
 # Build reset script
-cat << ResetScript > $INSTALLDIR/private/reset.sh 
-#! /bin/sh
+cp $TMP/drupal-installer/reset.sh $INSTALLDIR/private/
 
-################################################################################
-# Command line args
-################################################################################
-# set flag vars to empty
-noinstall=
+sed -e "s/__DBNAME__/$DBNAME/g" /
+    -e "s/__DBUSER__/$DBUSER/g" /
+    -e "s/__DBPASS__/$DBPASS/g" /
+    -e "s/__SITENAME__/$SITENAME/g" /
+    -e "s/__SITEMAIL__/$SITEMAIL/g" /
+    < $INSTALLDIR/private/reset.sh > $INSTALLDIR/private/reset.sh
 
-while getopts :n opt
-do
-    case \$opt in
-    n)     noinstall=true
-           ;;
-    esac
-done
-
-################################################################################
-# Variables needed to launch a Drupal site
-################################################################################
-PROFILE=ombubase
-DBNAME=$DBNAME
-DBUSER=$DBUSER
-DBPW=$DBPASS
-SITENAME="$SITENAME"
-SITEMAIL="$SITEMAIL"
-ACCTNAME=system
-ACCTPW=pass
-ACCTMAIL="$SITEMAIL"
-
-################################################################################
-# Should not need to change code below
-################################################################################
-
-if [ \$noinstall ]; then
-    echo "Called with noinstall option. Exiting before running installer.";
-    exit 0;
-fi
-
-echo "+ Running Drupal installer..."
-drush si --yes \$PROFILE             \
-    --db-url="mysqli://\$DBUSER:\$DBPW@localhost/\$DBNAME" \
-    --site-name="\$SITENAME"         \
-    --site-mail=\$SITEMAIL           \
-    --account-name=\$ACCTNAME        \
-    --account-pass=\$ACCTPW          \
-    --account-mail=\$ACCTMAIL        \
-    --dbuser=\$DBUSER
-ResetScript 
 chmod 775 $INSTALLDIR/private/reset.sh
+echo "+ Reset script created"
 
 # Create new repo and first commit
 echo "+ Creating initial mercurial repo"
@@ -160,13 +135,25 @@ HgIgnore
 
 hg add
 
-PROFILEREV=`git --git-dir=public/profiles/ombuprofile rev-parse HEAD`
+PROFILEREV=`git --git-dir=public/profiles/ombuprofile/.git --work-tree=public/profiles/ombuprofile rev-parse HEAD`
 hg ci -m "Initial install of OMBU Base rev# $PROFILEREV"
+
+if [ $NOINSTALL ]; then
+  echo "Called with noinstall option. Exiting before running installer."
+  exit 0
+fi
 
 # Run reset script in order to install site
 echo "+ Installing site"
-#cd public
-#../private/reset.sh
+cd public
+exit
+
+if [ $DEV ]; then
+  ../private/reset.sh -d
+else
+  ../private/reset.sh
+fi
+
 
 ################################################################################
 # Cleanup
