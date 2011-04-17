@@ -106,6 +106,12 @@ if [ ! -d $TMP/drupal-installer ]; then
   git clone git@github.com:ombu/drupal-installer.git $TMP/drupal-installer
 fi
 
+# Check if build directory exists
+if [ -d $INSTALLDIR/public ]; then
+  echo "Aborting: $INSTALL/public already exists, delete first before running this script"
+  exit 2
+fi
+
 # Build drupal site with make file, keeping repo directories
 drush make --no-clean --working-copy $TMP/drupal-installer/ombu7.make "$INSTALLDIR/public"
 

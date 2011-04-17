@@ -17,7 +17,7 @@ done
 ################################################################################
 # Variables needed to launch a Drupal site
 ################################################################################
-PROFILE="ombubase"
+PROFILE="ombuprofile"
 DBNAME="__DBNAME__"
 DBUSER="__DBUSER__"
 DBPW="__DBPASS__"
