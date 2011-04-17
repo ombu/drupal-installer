@@ -104,7 +104,7 @@ if [ ! -d $TMP/drupal-installer ]; then
 fi
 
 # Build drupal site with make file, keeping repo directories
-# drush make --no-clean --working-copy $TMP/drupal-installer/ombu7.make "$INSTALLDIR/public"
+drush make --no-clean --working-copy $TMP/drupal-installer/ombu7.make "$INSTALLDIR/public"
 
 echo "+ Drupal build complete"
 
