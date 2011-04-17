@@ -10,14 +10,12 @@ drupalbuild [OPTION]... [DIRECTORY]
   Options:
 
     -d [NAME]    Database name. If site is set to install and this option isn't given,
-                then you will be prompted to enter this during the install process.
+                 then you will be prompted to enter this during the install process.
     -u [USER]    Database user. If site is set to install and this option isn't given,
-                then you will be prompted to enter this during the install process.
+                 then you will be prompted to enter this during the install process.
     -p           Prompt for database password.
     -s [SITE]    Site name. If not set, then will default to "Site Name"
     -e [EMAIL]   Site email. If not set, then will default to "example@ombuweb.com"
-
-  Misc:
     -x           Install dev modules and data.
     -n           No install; don't install Drupal site after downloading it
     -h           This help
