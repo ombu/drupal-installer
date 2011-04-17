@@ -64,6 +64,6 @@ drush cc all
 chmod 0755 sites/default
 chmod 0644 sites/default/settings.php
 
-if [ -x growlnotify ]
+if [ -x growlnotify ]; then
   growlnotify -a Terminal -m "$SITENAME Drupal build complete"
 fi
