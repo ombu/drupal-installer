@@ -37,13 +37,13 @@ if [ $noinstall ]; then
 fi
 
 echo "+ Running Drupal installer..."
-drush si --yes $PROFILE             /
-  --db-url="mysqli://$DBUSER:$DBPW@localhost/$DBNAME" /
-  --site-name="$SITENAME"         /
-  --site-mail=$SITEMAIL           /
-  --account-name=$ACCTNAME        /
-  --account-pass=$ACCTPW          /
-  --account-mail=$ACCTMAIL        /
+drush si --yes $PROFILE             \
+  --db-url="mysqli://$DBUSER:$DBPW@localhost/$DBNAME" \
+  --site-name="$SITENAME"         \
+  --site-mail=$SITEMAIL           \
+  --account-name=$ACCTNAME        \
+  --account-pass=$ACCTPW          \
+  --account-mail=$ACCTMAIL        \
   --dbuser=$DBUSER
 
 if [ $dev ]; then

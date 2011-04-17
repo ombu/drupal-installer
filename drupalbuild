@@ -29,6 +29,9 @@ Misc:
 Help
 }
 
+# Get current working directory.
+CWD=`pwd`
+
 # define temp directory
 # Warning: this directory will be removed at the end of the script, so make sure
 # it's a subdirectory
@@ -111,12 +114,12 @@ echo "+ Drupal build complete"
 # Build reset script
 cp $TMP/drupal-installer/reset.sh $INSTALLDIR/private/
 
-sed -e "s/__DBNAME__/$DBNAME/g" /
-    -e "s/__DBUSER__/$DBUSER/g" /
-    -e "s/__DBPASS__/$DBPASS/g" /
-    -e "s/__SITENAME__/$SITENAME/g" /
-    -e "s/__SITEMAIL__/$SITEMAIL/g" /
-    < $INSTALLDIR/private/reset.sh > $INSTALLDIR/private/reset.sh
+sed -i "" -e "s/__DBNAME__/$DBNAME/g" \
+    -e "s/__DBUSER__/$DBUSER/g" \
+    -e "s/__DBPASS__/$DBPASS/g" \
+    -e "s/__SITENAME__/$SITENAME/g" \
+    -e "s/__SITEMAIL__/$SITEMAIL/g" \
+    $INSTALLDIR/private/reset.sh
 
 chmod 775 $INSTALLDIR/private/reset.sh
 echo "+ Reset script created"
@@ -140,13 +143,13 @@ hg ci -m "Initial install of OMBU Base rev# $PROFILEREV"
 
 if [ $NOINSTALL ]; then
   echo "Called with noinstall option. Exiting before running installer."
+  cd $CWD
   exit 0
 fi
 
 # Run reset script in order to install site
 echo "+ Installing site"
 cd public
-exit
 
 if [ $DEV ]; then
   ../private/reset.sh -d
@@ -154,8 +157,10 @@ else
   ../private/reset.sh
 fi
 
+# Change back to original directory
+cd $CWD
 
 ################################################################################
 # Cleanup
 ################################################################################
-# rm -rf $TMP
+rm -rf $TMP
