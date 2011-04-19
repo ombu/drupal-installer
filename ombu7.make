@@ -24,6 +24,12 @@ projects[views][subdir]                 = contrib
 projects[views_ui_basic][subdir]        = contrib
 projects[wysiwyg][subdir]               = contrib
 
+projects[draggableviews][subdir]        = contrib
+; items_per_page index notice patch
+projects[draggableviews][patch][]       = http://drupal.org/files/issues/draggableviews-pager-951376-9.patch
+; strict reference notice
+projects[draggableviews][patch][]       = http://drupal.org/files/issues/draggableviews-strict-1132396-2.patch
+
 ; Custom Modules
 projects[ombucleanup][download][type]   = git
 projects[ombucleanup][download][url]    = git@github.com:ombu/drupal-ombucleanup.git
