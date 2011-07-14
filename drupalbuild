@@ -90,9 +90,10 @@ if [ $* ]; then
   if [ ! -d $INSTALLDIR ]; then
     mkdir $INSTALLDIR
   fi
-  if [ ! -d $INSTALLDIR/private ]; then
-    mkdir $INSTALLDIR/private
-  fi
+fi
+
+if [ ! -d $INSTALLDIR/private ]; then
+  mkdir $INSTALLDIR/private
 fi
 
 
@@ -114,6 +115,9 @@ fi
 
 # Build drupal site with make file, keeping repo directories
 drush make --no-clean --working-copy $TMP/drupal-installer/ombu7.make "$INSTALLDIR/public"
+
+# Copy ombudashboard example blocks file to default site
+cp $INSTALLDIR/public/sites/all/modules/custom/ombudashboard/ombudashboard.admin_blocks.inc.example $INSTALLDIR/public/sites/default/ombudashboard.admin_blocks.inc
 
 echo "+ Drupal build complete"
 
