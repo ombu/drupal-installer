@@ -25,8 +25,7 @@ projects[views_ui_basic][subdir]        = contrib
 projects[wysiwyg][subdir]               = contrib
 
 projects[draggableviews][subdir]        = contrib
-; items_per_page index notice patch
-projects[draggableviews][patch][]       = http://drupal.org/files/issues/draggableviews-pager-951376-9.patch
+projects[draggableviews][version]       = 1.x-dev
 
 ; Custom Modules
 projects[ombucleanup][download][type]   = git
