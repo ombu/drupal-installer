@@ -25,4 +25,4 @@ Example
 The following will build Drupal into the drupal/ directory using the database 
 *database_name*:
 
-> drupal -d database_name -p -u user -s 'Site Name' -e test@test.com -x drupal
+> drupalbuild -d database_name -u user -p -s 'Site Name' -e test@test.com -x drupal
