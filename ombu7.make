@@ -48,9 +48,9 @@ projects[ombuadmin][download][url]    = git@github.com:ombu/drupal-ombuadmin.git
 projects[ombuadmin][download][branch] = d7
 projects[ombuadmin][type]             = theme
 projects[ombuadmin][download][type]   = git
-projects[ombuadmin][download][url]    = git@github.com:ombu/drupal-ombubase.git
-projects[ombuadmin][download][branch] = drupal
-projects[ombuadmin][type]             = theme
+projects[ombubase][download][url]    = git@github.com:ombu/drupal-ombubase.git
+projects[ombubase][download][branch] = drupal
+projects[ombubase][type]             = theme
 
 ; Libraries
 libraries[tinymce][download][type] = get
