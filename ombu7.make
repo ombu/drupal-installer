@@ -13,6 +13,7 @@ projects[ombuprofile][type]             = profile
 
 ; Contrib Modules
 projects[views_bulk_operations][subdir] = contrib
+projects[entity][subdir]                = contrib
 projects[ctools][subdir]                = contrib
 projects[context][subdir]               = contrib
 projects[devel][subdir]                 = contrib
