@@ -5,10 +5,13 @@
 ################################################################################
 # set flag vars to empty
 noinstall=
+dev=
 
 while getopts :n opt
 do
     case $opt in
+    d)     dev=true
+           ;;
     n)     noinstall=true
            ;;
     esac
