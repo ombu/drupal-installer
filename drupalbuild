@@ -81,6 +81,15 @@ do
 done
 shift $(($OPTIND - 1))
 
+# Set defaults
+if [ ! $SITEMAIL ]; then
+  SITEMAIL='example@ombuweb.com'
+fi
+if [ ! $SITENAME ]; then
+  SITENAME='Site Name'
+fi
+
+echo $SITEMAIL;
 INSTALLDIR='.'
 if [ $* ]; then
   INSTALLDIR=$*
