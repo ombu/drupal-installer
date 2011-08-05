@@ -24,8 +24,6 @@ projects[token][subdir]                 = contrib
 projects[views][subdir]                 = contrib
 projects[wysiwyg][subdir]               = contrib
 projects[views_ui_basic][subdir]        = contrib
-; strict undefined variable patch
-projects[views_ui_basic][patch][]       = http://drupal.org/files/issues/undefined_paths-1082666-6.patch
 
 projects[draggableviews][subdir]        = contrib
 projects[draggableviews][version]       = 1.x-dev
