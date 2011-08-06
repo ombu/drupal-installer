@@ -89,7 +89,6 @@ if [ ! $SITENAME ]; then
   SITENAME='Site Name'
 fi
 
-echo $SITEMAIL;
 INSTALLDIR='.'
 if [ $* ]; then
   INSTALLDIR=$*
