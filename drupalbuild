@@ -104,6 +104,18 @@ if [ ! -d $INSTALLDIR/private ]; then
   mkdir $INSTALLDIR/private
 fi
 
+# Create database if doesn't exist.
+if [ $DBNAME ]; then
+  echo "+ Creating database"
+  if [ $DBUSER != 'root' ]; then
+    echo "Enter root database password:"
+    stty -echo; read -r ROOTDBPASS; stty echo  # won't display what user types
+  else
+    ROOTDBPASS=$DBPASS
+  fi
+  echo "CREATE DATABASE IF NOT EXISTS $DBNAME" | mysql -u root -p$ROOTDBPASS
+fi
+
 
 ################################################################################
 # Drupal site build
