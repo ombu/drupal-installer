@@ -31,6 +31,23 @@ ACCTPW="pass"
 ACCTMAIL="__SITEMAIL__"
 
 ################################################################################
+# Reset DB
+################################################################################
+printf "Enter mysql root password: "
+stty -echo; read -r MYSQLROOT; stty echo  # won't display what user types
+echo ""
+
+SQL="
+DROP DATABASE IF EXISTS $DBNAME;
+CREATE DATABASE $DBNAME;
+GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, INDEX, ALTER, CREATE
+TEMPORARY TABLES, LOCK TABLES ON $DBNAME.* TO '$DBUSER'@'$DBHOST' IDENTIFIED BY '$DBPW';
+"
+
+echo "+ Reseting databse..."
+echo $SQL | mysql -u root -p$MYSQLROOT
+
+################################################################################
 # Should not need to change code below
 ################################################################################
 
