@@ -7,7 +7,7 @@
 noinstall=
 dev=
 
-while getopts :n opt
+while getopts :nd opt
 do
     case $opt in
     d)     dev=true
