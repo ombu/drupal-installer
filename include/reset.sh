@@ -56,6 +56,21 @@ if [ $noinstall ]; then
   exit 0
 fi
 
+printf "Enter mysql root password: "
+stty -echo; read -r MYSQLROOT; stty echo  # won't display what user types
+echo ""
+
+SQL="
+DROP DATABASE IF EXISTS $DBNAME;
+CREATE DATABASE $DBNAME;
+GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, INDEX, ALTER, CREATE
+TEMPORARY TABLES, LOCK TABLES ON $DBNAME.* TO '$DBUSER'@'localhost' IDENTIFIED
+BY '$DBPW';
+"
+
+echo "+ Resetting $DBNAME databse..."
+echo $SQL | mysql -u root -p$MYSQLROOT
+
 echo "+ Running Drupal installer..."
 drush si --yes $PROFILE             \
   --db-url="mysqli://$DBUSER:$DBPW@localhost/$DBNAME" \
@@ -73,9 +88,11 @@ if [ $dev ]; then
 
   # Generate test content
   # Usage: drush genc --types=node_type number_of_nodes number_of_comments
-  # drush genc --types=natural_area 20
+  # drush genc --types=page 20
 
-  # Import exported content
+  # Import exported content (with file assets).  Usage:
+  #   drush vset --yes node_export_file_assets_path path_to_assets_directory
+  #   drush node-export-import --file=path_to_export_file
   # drush vset --yes node_export_file_assets_path profiles/ombubase/exports/assets
   # drush node-export-import --file=profiles/ombubase/exports/ombubase-node_export.inc
 fi

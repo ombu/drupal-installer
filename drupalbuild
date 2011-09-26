@@ -104,18 +104,6 @@ if [ ! -d $INSTALLDIR/private ]; then
   mkdir $INSTALLDIR/private
 fi
 
-# Create database if doesn't exist.
-if [ $DBNAME ]; then
-  echo "+ Creating database"
-  if [ $DBUSER != 'root' ]; then
-    echo "Enter root database password:"
-    stty -echo; read -r ROOTDBPASS; stty echo  # won't display what user types
-  else
-    ROOTDBPASS=$DBPASS
-  fi
-  echo "CREATE DATABASE IF NOT EXISTS $DBNAME" | mysql -u root -p$ROOTDBPASS
-fi
-
 
 ################################################################################
 # Drupal site build
@@ -134,7 +122,7 @@ if [ -d $INSTALLDIR/public ]; then
 fi
 
 # Build drupal site with make file, keeping repo directories
-drush make --no-clean --working-copy $TMP/drupal-installer/ombu7.make "$INSTALLDIR/public"
+drush make --no-clean --working-copy $TMP/drupal-installer/include/ombu7.make "$INSTALLDIR/public"
 
 # Copy ombudashboard example blocks file to default site
 cp $INSTALLDIR/public/sites/all/modules/custom/ombudashboard/ombudashboard.admin_blocks.inc.example $INSTALLDIR/public/sites/default/ombudashboard.admin_blocks.inc
@@ -142,14 +130,17 @@ cp $INSTALLDIR/public/sites/all/modules/custom/ombudashboard/ombudashboard.admin
 echo "+ Drupal build complete"
 
 # Build reset script
-cp $TMP/drupal-installer/reset.sh $INSTALLDIR/private/
+cp $TMP/drupal-installer/include/reset.sh $INSTALLDIR/private/
+
+# Copy environment specific settings files.
+cp $TMP/drupal-installer/include/settings.* $INSTALLDIR/public/sites/default/
 
 sed -i "" -e "s/__DBNAME__/$DBNAME/g" \
     -e "s/__DBUSER__/$DBUSER/g" \
     -e "s/__DBPASS__/$DBPASS/g" \
     -e "s/__SITENAME__/$SITENAME/g" \
     -e "s/__SITEMAIL__/$SITEMAIL/g" \
-    $INSTALLDIR/private/reset.sh
+    $INSTALLDIR/private/reset.sh $INSTALLDIR/public/sites/default/settings.development.php
 
 chmod 775 $INSTALLDIR/private/reset.sh
 echo "+ Reset script created"
@@ -163,7 +154,6 @@ hg init
 cat << HgIgnore > .hgignore
 sites/default/settings.php
 sites/default/files
-.*\.git
 HgIgnore
 
 hg add
