@@ -8,8 +8,7 @@ usage()
 cat << Help
 usage: `basename $0` [OPTION]... [DIRECTORY]
 
-Install OMBU optimized Drupal site in [DIRECTORY] or the current directory if
-no directory is given.
+Install OMBU optimized Drupal site in [DIRECTORY]
 
 Options:
 
@@ -89,7 +88,6 @@ if [ ! $SITENAME ]; then
   SITENAME='Site Name'
 fi
 
-INSTALLDIR='.'
 if [ $* ]; then
   INSTALLDIR=$*
 
@@ -98,6 +96,9 @@ if [ $* ]; then
   if [ ! -d $INSTALLDIR ]; then
     mkdir $INSTALLDIR
   fi
+else
+  usage
+  exit
 fi
 
 if [ ! -d $INSTALLDIR/private ]; then
