@@ -56,21 +56,6 @@ if [ $noinstall ]; then
   exit 0
 fi
 
-printf "Enter mysql root password: "
-stty -echo; read -r MYSQLROOT; stty echo  # won't display what user types
-echo ""
-
-SQL="
-DROP DATABASE IF EXISTS $DBNAME;
-CREATE DATABASE $DBNAME;
-GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, INDEX, ALTER, CREATE
-TEMPORARY TABLES, LOCK TABLES ON $DBNAME.* TO '$DBUSER'@'localhost' IDENTIFIED
-BY '$DBPW';
-"
-
-echo "+ Resetting $DBNAME databse..."
-echo $SQL | mysql -u root -p$MYSQLROOT
-
 echo "+ Running Drupal installer..."
 drush si --yes $PROFILE             \
   --db-url="mysqli://$DBUSER:$DBPW@localhost/$DBNAME" \
