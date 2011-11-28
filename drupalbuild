@@ -147,20 +147,29 @@ chmod 775 $INSTALLDIR/private/reset.sh
 echo "+ Reset script created"
 
 # Create new repo and first commit
-echo "+ Creating initial mercurial repo"
+echo "+ Creating initial git & mercurial repos. You can delete the one you don't
+need"
 cd $INSTALLDIR
 hg init
+git init
 
-# .hgignore file
-cat << HgIgnore > .hgignore
-sites/default/settings.php
+# .hgignore & .gitignore files
+ignore_file="sites/default/settings.php \
+sites/default/settings.php \
 sites/default/files
-HgIgnore
+"
 
-hg add
+echo $ignore_file > .hgignore
+echo $ignore_file > .gitignore
+echo ".git" >> .hgignore
+echo ".gitignore" >> .hgignore
+
+hg add public private .hgignore
+git add public private .gitignore
 
 PROFILEREV=`git --git-dir=public/profiles/ombuprofile/.git --work-tree=public/profiles/ombuprofile rev-parse HEAD`
-hg ci -m "Initial install of OMBU Base rev# $PROFILEREV"
+hg commit -m "Initial install of OMBU Base rev# $PROFILEREV"
+git commit -m "Initial install of OMBU Base rev# $PROFILEREV"
 
 if [ $NOINSTALL ]; then
   echo "Called with noinstall option. Exiting before running installer."
