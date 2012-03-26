@@ -84,6 +84,7 @@ shift $(($OPTIND - 1))
 if [ ! $SITEMAIL ]; then
   SITEMAIL='example@ombuweb.com'
 fi
+
 if [ ! $SITENAME ]; then
   SITENAME='Site Name'
 fi
@@ -123,7 +124,7 @@ if [ -d $INSTALLDIR/public ]; then
 fi
 
 # Build drupal site with make file, keeping repo directories
-drush make --no-clean --working-copy $TMP/drupal-installer/include/ombu7.make "$INSTALLDIR/public"
+drush make --no-clean --no-gitinfofile --working-copy $TMP/drupal-installer/include/ombu7.make "$INSTALLDIR/public"
 
 # Copy ombudashboard example blocks file to default site
 cp $INSTALLDIR/public/sites/all/modules/custom/ombudashboard/ombudashboard.admin_blocks.inc.example $INSTALLDIR/public/sites/default/ombudashboard.admin_blocks.inc
