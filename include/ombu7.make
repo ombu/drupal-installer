@@ -54,7 +54,7 @@ projects[ombuadmin][download][branch] = d7
 projects[ombuadmin][type]             = theme
 projects[ombubase][download][type]   = git
 projects[ombubase][download][url]    = git@github.com:ombu/drupal-ombubase.git
-projects[ombubase][download][branch] = drupal
+projects[ombubase][download][branch] = master
 projects[ombubase][type]             = theme
 
 ; Libraries
