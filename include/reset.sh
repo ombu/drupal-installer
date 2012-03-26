@@ -64,8 +64,7 @@ drush si --yes $PROFILE             \
   --site-mail=$SITEMAIL           \
   --account-name=$ACCTNAME        \
   --account-pass=$ACCTPW          \
-  --account-mail=$ACCTMAIL        \
-  --dbuser=$DBUSER
+  --account-mail=$ACCTMAIL
 
 if [ $dev ]; then
   echo "+ Installing dev modules";
