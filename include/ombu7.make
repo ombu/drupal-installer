@@ -41,6 +41,12 @@ projects[ombudashboard][download][branch] = drupal7
 projects[ombudashboard][type]             = module
 projects[ombudashboard][subdir]           = custom
 
+projects[ombuseo][download][type]   = git
+projects[ombuseo][download][url]    = git@github.com:ombu/drupal-ombuseo.git
+projects[ombuseo][download][branch] = drupal7
+projects[ombuseo][type]             = module
+projects[ombuseo][subdir]           = custom
+
 ; Themes
 projects[ombuadmin][download][type]   = git
 projects[ombuadmin][download][url]    = git@github.com:ombu/drupal-ombuadmin.git
