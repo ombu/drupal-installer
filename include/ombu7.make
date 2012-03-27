@@ -47,11 +47,13 @@ projects[ombuseo][download][branch] = drupal7
 projects[ombuseo][type]             = module
 projects[ombuseo][subdir]           = custom
 
+projects[ombuwire][download][type]   = git
+projects[ombuwire][download][url]    = git@github.com:ombu/drupal-ombuwire.git
+projects[ombuwire][download][branch] = master
+projects[ombuwire][type]             = module
+projects[ombuwire][subdir]           = custom
+
 ; Themes
-projects[ombuadmin][download][type]   = git
-projects[ombuadmin][download][url]    = git@github.com:ombu/drupal-ombuadmin.git
-projects[ombuadmin][download][branch] = d7
-projects[ombuadmin][type]             = theme
 projects[ombubase][download][type]   = git
 projects[ombubase][download][url]    = git@github.com:ombu/drupal-ombubase.git
 projects[ombubase][download][branch] = master
