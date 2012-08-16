@@ -141,9 +141,6 @@ fi
 # Build drupal site with make file, keeping repo directories
 drush make --no-gitinfofile $TMP/drupal-installer/include/ombu7.make "$INSTALLDIR/public"
 
-# Copy ombudashboard example blocks file to default site
-cp $INSTALLDIR/public/sites/all/modules/custom/ombudashboard/ombudashboard.admin_blocks.inc.example $INSTALLDIR/public/sites/default/ombudashboard.admin_blocks.inc
-
 echo "+ Drupal build complete"
 
 # Copy default included files
@@ -182,6 +179,9 @@ git submodule add -b drupal7 git@github.com:ombu/drupal-ombudashboard.git public
 git submodule add -b drupal7 git@github.com:ombu/drupal-ombuseo.git public/sites/all/modules/custom/ombuseo
 git submodule add git@github.com:ombu/drupal-ombuwire.git public/sites/all/modules/custom/ombuwire
 git submodule add -b dev git@github.com:ombu/drupal-ombubase.git public/sites/all/themes/ombubase
+
+# Copy ombudashboard example blocks file to default site
+cp $INSTALLDIR/public/sites/all/modules/custom/ombudashboard/ombudashboard.admin_blocks.inc.example $INSTALLDIR/public/sites/default/ombudashboard.admin_blocks.inc
 
 # Setup theme
 echo "+ Setting up theme"
