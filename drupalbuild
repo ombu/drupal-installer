@@ -116,7 +116,7 @@ CWD=`pwd`
 # define temp directory
 # Warning: this directory will be removed at the end of the script, so make sure
 # it's a subdirectory
-TMP="/Users/jonduell/bin"
+TMP="/tmp/drupalbuild"
 if [ ! -d $TMP ]; then
   mkdir $TMP
 fi
