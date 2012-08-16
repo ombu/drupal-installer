@@ -19,25 +19,19 @@ Options:
   -p           Prompt for database password.
   -s [SITE]    Site name. If not set, then will default to "Site Name"
   -e [EMAIL]   Site email. If not set, then will default to "example@ombuweb.com"
+  -t [THEME]   The type of theme to use for this site. Can either be "starter" or
+               "starter_grid".  If not set, then will default to "starter"
+  -m [NAME]    The short name for the project (used current for theme name).  If
+               not set, then the database name will be used. Shouldn't contain
+               spaces or special characters.
 
 Misc:
   -x           Install dev modules and data.
   -n           No install; don't install Drupal site after downloading it
   -h           This help
-  
+
 Help
 }
-
-# Get current working directory.
-CWD=`pwd`
-
-# define temp directory
-# Warning: this directory will be removed at the end of the script, so make sure
-# it's a subdirectory
-TMP="/tmp/drupalbuild"
-if [ ! -d $TMP ]; then
-  mkdir $TMP
-fi
 
 ################################################################################
 # Command line args
@@ -61,6 +55,12 @@ do
       ;;
     e)
       SITEMAIL=$OPTARG
+      ;;
+    t)
+      THEME=$OPTARG
+      ;;
+    m)
+      SHORTNAME==$OPTARG
       ;;
     n)
       NOINSTALL=true
@@ -89,6 +89,14 @@ if [ ! $SITENAME ]; then
   SITENAME='Site Name'
 fi
 
+if [ ! $THEME ]; then
+  THEME='starter'
+fi
+
+if [ ! $SHORTNAME ]; then
+  SHORTNAME=$DBNAME
+fi
+
 if [ $* ]; then
   INSTALLDIR=$*
 
@@ -102,8 +110,15 @@ else
   exit
 fi
 
-if [ ! -d $INSTALLDIR/private ]; then
-  mkdir $INSTALLDIR/private
+# Get current working directory.
+CWD=`pwd`
+
+# define temp directory
+# Warning: this directory will be removed at the end of the script, so make sure
+# it's a subdirectory
+TMP="/Users/jonduell/bin"
+if [ ! -d $TMP ]; then
+  mkdir $TMP
 fi
 
 
@@ -124,15 +139,16 @@ if [ -d $INSTALLDIR/public ]; then
 fi
 
 # Build drupal site with make file, keeping repo directories
-drush make --no-clean --no-gitinfofile --working-copy $TMP/drupal-installer/include/ombu7.make "$INSTALLDIR/public"
+drush make --no-gitinfofile $TMP/drupal-installer/include/ombu7.make "$INSTALLDIR/public"
 
 # Copy ombudashboard example blocks file to default site
 cp $INSTALLDIR/public/sites/all/modules/custom/ombudashboard/ombudashboard.admin_blocks.inc.example $INSTALLDIR/public/sites/default/ombudashboard.admin_blocks.inc
 
 echo "+ Drupal build complete"
 
-# Build reset script
-cp $TMP/drupal-installer/include/reset.sh $INSTALLDIR/private/
+# Copy default included files
+cp $TMP/drupal-installer/include/fabfile.py $INSTALLDIR/
+cp $TMP/drupal-installer/include/README.md $INSTALLDIR/
 
 # Copy environment specific settings files.
 cp $TMP/drupal-installer/include/settings.* $INSTALLDIR/public/sites/default/
@@ -142,10 +158,9 @@ sed -i "" -e "s/__DBNAME__/$DBNAME/g" \
     -e "s/__DBPASS__/$DBPASS/g" \
     -e "s/__SITENAME__/$SITENAME/g" \
     -e "s/__SITEMAIL__/$SITEMAIL/g" \
-    $INSTALLDIR/private/reset.sh $INSTALLDIR/public/sites/default/settings.development.php
+    $INSTALLDIR/fabfile.py $INSTALLDIR/README.md $INSTALLDIR/public/sites/default/settings.development.php
 
-chmod 775 $INSTALLDIR/private/reset.sh
-echo "+ Reset script created"
+cp $INSTALLDIR/public/sites/default/settings.development.php $INSTALLDIR/public/sites/default/settings.php
 
 # Create new repo and first commit
 echo "+ Initializing git repo"
@@ -153,16 +168,41 @@ cd $INSTALLDIR
 git init
 
 # .gitignore file
-ignore_file="sites/default/settings.php \
-sites/default/settings.php \
+ignore_file="sites/default/settings.php
+sites/default/settings.php
 sites/default/files
 "
 
 echo $ignore_file > .gitignore
-git add public private .gitignore
 
-PROFILEREV=`git --git-dir=public/profiles/ombuprofile/.git --work-tree=public/profiles/ombuprofile rev-parse HEAD`
-git commit -m "Initial install of OMBU Base rev# $PROFILEREV"
+# Add git submodules
+echo "+ Setting up submodules"
+git submodule add -b drupal7 git@github.com:ombu/drupal-ombucleanup.git public/sites/all/modules/custom/ombucleanup
+git submodule add -b drupal7 git@github.com:ombu/drupal-ombudashboard.git public/sites/all/modules/custom/ombudashboard
+git submodule add -b drupal7 git@github.com:ombu/drupal-ombuseo.git public/sites/all/modules/custom/ombuseo
+git submodule add git@github.com:ombu/drupal-ombuwire.git public/sites/all/modules/custom/ombuwire
+git submodule add -b dev git@github.com:ombu/drupal-ombubase.git public/sites/all/themes/ombubase
+
+# Setup theme
+echo "+ Setting up theme"
+cp -r public/sites/all/themes/ombubase/$THEME public/sites/all/themes/$SHORTNAME
+mv public/sites/all/themes/$SHORTNAME/$THEME.info public/sites/all/themes/$SHORTNAME/$SHORTNAME.info
+sed -i "" -e "s/name =.*/name = $SITENAME Theme/" \
+  -e "s/description =.*/description = $SITENAME Theme/" \
+  -e "s/base theme =.*/base theme = $THEME/" \
+  public/sites/all/themes/$SHORTNAME/$SHORTNAME.info
+
+if [ -f public/sites/all/themes/$SHORTNAME/template.php ]; then
+  sed -i "" -e "s/$THEME/$SHORTNAME/g" public/sites/all/themes/$SHORTNAME/template.php
+fi
+
+sed -i "" -e "s/bartik/$SHORTNAME/" public/profiles/ombuprofile/ombuprofile.profile
+
+chmod 0774 public/sites/default
+chmod 0664 public/sites/default/settings.php
+
+git add public fabfile.py README.md .gitignore
+git commit -m "Initial install of OMBU Base"
 
 if [ $NOINSTALL ]; then
   echo "Called with noinstall option. Exiting before running installer."
@@ -170,14 +210,11 @@ if [ $NOINSTALL ]; then
   exit 0
 fi
 
-# Run reset script in order to install site
-echo "+ Installing site"
-cd public
-
+# Run fabric installer
 if [ $DEV ]; then
-  ../private/reset.sh -d
+  fab drupal.build
 else
-  ../private/reset.sh
+  fab drupal.build:dev=yes
 fi
 
 # Change back to original directory
@@ -186,6 +223,6 @@ cd $CWD
 ################################################################################
 # Cleanup
 ################################################################################
-rm -rf $TMP
+# rm -rf $TMP
 
 echo "+ Drupal build complete"
