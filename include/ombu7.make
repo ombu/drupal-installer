@@ -24,6 +24,7 @@ projects[token][subdir]                 = contrib
 projects[views][subdir]                 = contrib
 projects[wysiwyg][subdir]               = contrib
 projects[media][subdir]                 = contrib
+projects[xmlsitemap][subdir]            = contrib
 
 ; Libraries
 libraries[tinymce][download][type] = get
