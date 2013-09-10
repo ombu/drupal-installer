@@ -206,17 +206,14 @@ chmod 0664 public/sites/default/settings.php
 git add public fabfile.py README.md .gitignore
 git commit -m "Initial install of OMBU Base"
 
-if [ $NOINSTALL ]; then
-  echo "Called with noinstall option. Exiting before running installer."
-  cd $CWD
-  exit 0
-fi
-
-# Run fabric installer
-if [ $DEV ]; then
-  fab drupal.build
-else
-  fab drupal.build:dev=yes
+if [ ! $NOINSTALL ]; then
+  # Run fabric installer
+  echo "+ Running fabric installer"
+  if [ $DEV ]; then
+    fab drupal.build
+  else
+    fab drupal.build:dev=yes
+  fi
 fi
 
 # Change back to original directory
@@ -225,6 +222,7 @@ cd $CWD
 ################################################################################
 # Cleanup
 ################################################################################
-# rm -rf $TMP
+echo "+ Cleaning up temp files"
+rm -rf $TMP
 
 echo "+ Drupal build complete"
