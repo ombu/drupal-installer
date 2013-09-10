@@ -180,14 +180,14 @@ git submodule add -b drupal7 git@github.com:ombu/drupal-ombucleanup.git public/s
 git submodule add -b drupal7 git@github.com:ombu/drupal-ombudashboard.git public/sites/all/modules/custom/ombudashboard
 git submodule add -b drupal7 git@github.com:ombu/drupal-ombuseo.git public/sites/all/modules/custom/ombuseo
 git submodule add git@github.com:ombu/drupal-ombuwire.git public/sites/all/modules/custom/ombuwire
-git submodule add -b dev git@github.com:ombu/drupal-ombubase.git public/sites/all/themes/ombubase
+git submodule add git@github.com:ombu/drupal-boots.git public/sites/all/themes/boots
 
 # Copy ombudashboard example blocks file to default site
 cp $INSTALLDIR/public/sites/all/modules/custom/ombudashboard/ombudashboard.admin_blocks.inc.example $INSTALLDIR/public/sites/default/ombudashboard.admin_blocks.inc
 
 # Setup theme
 echo "+ Setting up theme"
-cp -r public/sites/all/themes/ombubase/$THEME public/sites/all/themes/$SHORTNAME
+cp -r public/sites/all/themes/boots/$THEME public/sites/all/themes/$SHORTNAME
 mv public/sites/all/themes/$SHORTNAME/$THEME.info public/sites/all/themes/$SHORTNAME/$SHORTNAME.info
 sed -i "" -e "s/name =.*/name = $SITENAME Theme/" \
   -e "s/description =.*/description = $SITENAME Theme/" \
