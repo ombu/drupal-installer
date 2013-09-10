@@ -90,7 +90,7 @@ if [ ! $SITENAME ]; then
 fi
 
 if [ ! $THEME ]; then
-  THEME='starter'
+  THEME='boots_grid'
 fi
 
 if [ ! $SHORTNAME ]; then

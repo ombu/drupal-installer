@@ -23,6 +23,7 @@ projects[oembed][subdir]                = contrib
 projects[entity][subdir]                = contrib
 projects[ctools][subdir]                = contrib
 projects[features][subdir]              = contrib
+projects[libraries][subdir]             = contrib
 projects[token][subdir]                 = contrib
 projects[xmlsitemap][subdir]            = contrib
 projects[devel][subdir]                 = contrib
