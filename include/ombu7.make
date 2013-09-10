@@ -28,21 +28,25 @@ projects[xmlsitemap][subdir]            = contrib
 
 
 ; OMBU Modules
+projects[ombucore][subdir]                = custom
 projects[ombucore][download][type]        = git
 projects[ombucore][download][url]         = git@github.com:ombu/drupal-ombucore.git
 projects[ombucore][download][branch]      = master
 projects[ombucore][type]                  = module
 
+projects[ombucleanup][subdir]             = custom
 projects[ombucleanup][download][type]     = git
 projects[ombucleanup][download][url]      = git@github.com:ombu/drupal-ombucleanup.git
 projects[ombucleanup][download][branch]   = drupal7
 projects[ombucleanup][type]               = module
 
+projects[ombudashboard][subdir]           = custom
 projects[ombudashboard][download][type]   = git
 projects[ombudashboard][download][url]    = git@github.com:ombu/drupal-ombudashboard.git
 projects[ombudashboard][download][branch] = drupal7
 projects[ombudashboard][type]             = module
 
+projects[ombuseo][subdir]                 = custom
 projects[ombuseo][download][type]         = git
 projects[ombuseo][download][url]          = git@github.com:ombu/drupal-ombuseo.git
 projects[ombuseo][download][branch]       = drupal7
