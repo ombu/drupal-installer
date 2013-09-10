@@ -26,6 +26,7 @@ projects[features][subdir]              = contrib
 projects[libraries][subdir]             = contrib
 projects[token][subdir]                 = contrib
 projects[xmlsitemap][subdir]            = contrib
+projects[htmlpurifier][subdir]          = contrib
 projects[devel][subdir]                 = contrib
 projects[diff][subdir]                  = contrib
 
