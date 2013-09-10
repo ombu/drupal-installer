@@ -25,7 +25,8 @@ projects[ctools][subdir]                = contrib
 projects[features][subdir]              = contrib
 projects[token][subdir]                 = contrib
 projects[xmlsitemap][subdir]            = contrib
-
+projects[devel][subdir]                 = contrib
+projects[diff][subdir]                  = contrib
 
 ; OMBU Modules
 projects[ombucore][subdir]                = custom
