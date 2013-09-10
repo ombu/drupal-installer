@@ -129,7 +129,9 @@ echo "+ Building Drupal code"
 
 # Download make file (can't run it off of github behind private repo)
 if [ ! -d $TMP/drupal-installer ]; then
-  git clone git@github.com:ombu/drupal-installer.git $TMP/drupal-installer
+#  git clone git@github.com:ombu/drupal-installer.git $TMP/drupal-installer
+# TEMP: use feature-ombucore branch for dev
+  git clone -b feature-ombucore git@github.com:ombu/drupal-installer.git $TMP/drupal-installer
 fi
 
 # Check if build directory exists
