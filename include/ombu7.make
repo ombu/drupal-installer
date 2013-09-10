@@ -56,5 +56,7 @@ projects[ombuseo][download][branch]       = drupal7
 projects[ombuseo][type]                   = module
 
 ; Libraries
-libraries[tinymce][download][type] = get
-libraries[tinymce][download][url]  = https://github.com/downloads/tinymce/tinymce/tinymce_3.3.9.4.zip
+libraries[tinymce][download][type]        = get
+libraries[tinymce][download][url]         = https://github.com/downloads/tinymce/tinymce/tinymce_3.3.9.4.zip
+libraries[htmlpurifier][download][type]   = get
+libraries[htmlpurifier][download][url]    = http://htmlpurifier.org/releases/htmlpurifier-4.5.0.zip
