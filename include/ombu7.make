@@ -14,11 +14,9 @@ projects[ombuprofile][type]             = profile
 ; Contrib Modules
 projects[views][subdir]                 = contrib
 projects[views_bulk_operations][subdir] = contrib
-projects[wysiwyg][subdir]               = contrib
 projects[pathauto][subdir]              = contrib
 projects[redirect][subdir]              = contrib
 projects[context][subdir]               = contrib
-projects[media][subdir]                 = contrib
 projects[oembed][subdir]                = contrib
 projects[entity][subdir]                = contrib
 projects[ctools][subdir]                = contrib
@@ -29,6 +27,13 @@ projects[xmlsitemap][subdir]            = contrib
 projects[htmlpurifier][subdir]          = contrib
 projects[devel][subdir]                 = contrib
 projects[diff][subdir]                  = contrib
+
+projects[media][subdir]                 = contrib
+projects[media][version]                = 7.x-2.0-alpha1
+projects[file_entity][subdir]           = contrib
+
+projects[wysiwyg][subdir]               = contrib
+projects[wysiwyg][patches][]            = https://drupal.org/files/wysiwyg-ckeditor-4.1853550.136.patch
 
 ; OMBU Modules
 projects[ombucore][subdir]                = custom
@@ -56,7 +61,7 @@ projects[ombuseo][download][branch]       = drupal7
 projects[ombuseo][type]                   = module
 
 ; Libraries
-libraries[tinymce][download][type]        = get
-libraries[tinymce][download][url]         = https://github.com/downloads/tinymce/tinymce/tinymce_3.3.9.4.zip
+libraries[ckeditor][download][type]       = get
+libraries[ckeditor][download][url]        = http://download.cksource.com/CKEditor/CKEditor/CKEditor%204.2.1/ckeditor_4.2.1_standard.zip
 libraries[htmlpurifier][download][type]   = get
 libraries[htmlpurifier][download][url]    = http://htmlpurifier.org/releases/htmlpurifier-4.5.0.zip
