@@ -27,9 +27,11 @@ projects[xmlsitemap][subdir]            = contrib
 projects[htmlpurifier][subdir]          = contrib
 projects[devel][subdir]                 = contrib
 projects[diff][subdir]                  = contrib
+projects[link][subdir]                  = contrib
+projects[field_collection][subdir]      = contrib
 
 projects[media][subdir]                 = contrib
-projects[media][version]                = 7.x-2.0-alpha1
+projects[media][version]                = 2.0-alpha1
 projects[file_entity][subdir]           = contrib
 
 projects[wysiwyg][subdir]               = contrib
@@ -59,6 +61,24 @@ projects[ombuseo][download][type]         = git
 projects[ombuseo][download][url]          = git@github.com:ombu/drupal-ombuseo.git
 projects[ombuseo][download][branch]       = drupal7
 projects[ombuseo][type]                   = module
+
+projects[ombubeans][subdir]               = custom
+projects[ombubeans][download][type]       = git
+projects[ombubeans][download][url]        = git@github.com:ombu/drupal-ombubeans.git
+projects[ombubeans][download][branch]     = develop
+projects[ombubeans][type]                 = module
+
+projects[beancontainer][subdir]           = custom
+projects[beancontainer][download][type]   = git
+projects[beancontainer][download][url]    = git@github.com:ombu/drupal-beancontainer.git
+projects[beancontainer][download][branch] = master
+projects[beancontainer][type]             = module
+
+projects[ombuslide][subdir]               = custom
+projects[ombuslide][download][type]       = git
+projects[ombuslide][download][url]        = git@github.com:ombu/drupal-ombuslide.git
+projects[ombuslide][download][branch]     = master
+projects[ombuslide][type]                 = module
 
 ; Libraries
 libraries[ckeditor][download][type]       = get
