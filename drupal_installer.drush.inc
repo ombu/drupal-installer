@@ -18,14 +18,14 @@ function drupal_installer_drush_command() {
       'db-url' => array(
         'description' => 'A Drupal 6 style database URL. Only required for initial install - not re-install.',
         'example-value' => 'mysql://root:pass@host/db',
+        'required' => TRUE,
       ),
-      'short_name' => array(
+      'short-name' => array(
         'description' => 'The short name for the project. Will be used to name theme, profile, and base feature. If not set then the database name will be used. Only letter, numbers and underscores are allowed.',
         'example-value' => 'my_site',
       ),
       'site-name' => 'Defaults to Site-Install',
-      'site-mail' => 'From: for system mailings. Defaults to admin@example.com',
-      'dev' => 'Install dev modules and data',
+      'site-mail' => 'From: for system mailings. Defaults to noreply@ombuweb.com',
       'demo' => 'Install a demo tiles site',
     ),
     'aliases' => array('di'),
@@ -41,6 +41,12 @@ function drupal_installer_drush_command() {
 function drupal_installer_drush_callback() {
   $command = drush_get_command();
 
+  // Get options.
+  $db_spec = _drush_sql_get_db_spec();
+  $short_name = drush_get_option('short-name', $db_spec['database']);
+  $site_name = drush_get_option('site-name', 'Site-Install');
+  $site_mail = drush_get_option('site-email', 'noreply@ombuweb.com');
+
   // Check if build directory exists
   if (file_exists('public')) {
     drush_set_error(dt("Aborting: public directory already exists, delete first before running this command"));
@@ -49,55 +55,126 @@ function drupal_installer_drush_callback() {
 
   // Build drupal site with make file, keeping repo directories
   drush_invoke_process('@none', 'make', array(
-    $command['path'] . '/include/ombu7.make',
+    $command['path'] . '/includes/ombu7.make',
     'public'
   ), array(
     '--no-gitinfofile',
   ));
 
-  // Setting to interpolate in included files.
+  // Settings to replace in included files.
   $settings = array(
-    '_DBNAME__',
-    '_DBUSER__',
-    '_DBPASS__',
-    '_SITENAME__',
-    '_SITEMAIL__',
+    '__SHORTNAME__' => $short_name,
+    '__DBNAME__' => $db_spec['database'],
+    '__DBUSER__' => $db_spec['username'],
+    '__DBPASS__' => $db_spec['password'],
+    '__SITENAME__' => $site_name,
+    '__SITEMAIL__' => $site_mail,
   );
+
+  // Setup default feature.
+  $feature_name = $short_name . '_base';
+  $feature_path = 'public/sites/all/modules/features/' . $feature_name;
+  drush_op('mkdir', 'public/sites/all/modules/features');
+  drush_shell_exec('cp -r %s %s', $command['path'] . '/includes/features/base', $feature_path);
+  foreach (glob($feature_path . '/*') as $filename) {
+    $destination = $feature_path . '/' . str_replace('base', $feature_name);
+    drush_op('rename', $feature_path . '/' . $filename, $destination);
+    drupal_installer_interpolate_values($destination, $settings);
+  }
+  drush_log(dt('Feature setup'), 'ok');
+
+  // Setup theme.
+  $theme_name = $short_name . '_theme';
+  $theme_path = 'public/sites/all/themes/' . $theme_name;
+
+  drush_op('mkdir', $theme_path);
+
+  $info_file = <<<EOD
+name = $sitename Theme
+description = $sitename Theme
+base theme = boots_grid
+package = OMBU
+version = 7.x-0.1
+core = 7.x
+
+stylesheets[all][] = css/style.css
+
+settings[tiles_regions][content_top] = Content Top
+settings[tiles_regions][content] = Content
+settings[tiles_regions][content_bottom] = Content Bottom
+EOD;
+  drush_op('file_put_contents', $theme_path . '/' . $theme_name . '.info', $info_file);
+
+  drush_op('mkdir', $theme_path . '/css');
+  drush_op('touch', $theme_path . '/css/style.css');
+  drush_op('touch', $theme_path . '/css/style.less');
+
+  drush_log(dt('Theme setup'), 'ok');
+
+  // Setup profile. If spinning up a demo site, load the tiles profile (which
+  // sets up default blocks).
+  if (drush_get_option('demo')) {
+    $profile_name = 'tiles_profile';
+    $settings['__PROFILENAME__'] = $profile_name;
+
+    drush_shell_exec('cp -r %s %s', $command['path'] . '/includes/profiles/tiles_profile', 'public/profiles/tiles_profile');
+  }
+  else {
+    $profile_name = $short_name . '_profile';
+    $settings['__PROFILENAME__'] = $profile_name;
+    $profile_path = 'public/profiles/' . $profile_name;
+
+    drush_shell_exec('cp -r %s %s', $command['path'] . '/includes/profiles/default_profile', $profile_path);
+
+    $profile_files = array(
+      'default_profile.info' => $profile_name . '.info',
+      'default_profile.install' => $profile_name . '.install',
+      'default_profile.profile' => $profile_name . '.profile',
+    );
+    foreach ($profile_files as $source => $destination) {
+      drush_op('rename', $profile_path . '/' . $source, $profile_path . '/' . $destination);
+      drupal_installer_interpolate_values($profile_path . '/' . $destination, $settings + array('default_profile' => $profile_name));
+    }
+
+    drush_op('mkdir', $profile_path . '/config');
+
+    $theme_file = <<<EOD
+add:
+  default_theme: $theme_name
+EOD;
+    drush_op('file_put_contents', $profile_path . '/config/theme.yml', $theme_file);
+
+    $module_file = <<<EOD
+add:
+  - $feature_name
+EOD;
+    drush_op('file_put_contents', $profile_path . '/config/modules.yml', $module_file);
+
+  }
+  drush_log(dt('Profile setup'), 'ok');
 
   // Copy default included files.
   $files = array(
-    'include/fabfile.py' => 'fabfile.py',
-    'include/README.md' => 'README.md',
-    'settings.development.php' => 'sites/default/settings.development.php',
-    'settings.qa.php' => 'sites/default/settings.qa.php',
-    'settings.staging.php' => 'sites/default/settings.staging.php',
-    'settings.production.php' => 'sites/default/settings.production.php',
+    'includes/fabfile.py'                        => 'fabfile.py',
+    'includes/README.md'                         => 'README.md',
+    'includes/settings/settings.development.php' => 'public/sites/default/settings.development.php',
+    'includes/settings/settings.qa.php'          => 'public/sites/default/settings.qa.php',
+    'includes/settings/settings.staging.php'     => 'public/sites/default/settings.staging.php',
+    'includes/settings/settings.production.php'  => 'public/sites/default/settings.production.php',
+    'includes/settings/settings.production.php'  => 'public/sites/default/settings.production.php',
   );
   foreach ($files as $source => $destination) {
     drush_op('copy', $command['path'] . '/' . $source, $destination);
-    drupal_installer_iterpolate_values($destination, $settings);
+    drupal_installer_interpolate_values($destination, $settings);
   }
-
-  // Setup ombudashboard.
+  drush_op('copy', 'public/sites/default/settings.development.php', 'public/sites/default/settings.php');
   drush_op('copy', 'public/sites/all/modules/custom/ombudashboard/ombudashboard.admin_blocks.inc.example', 'public/sites/default/ombudashboard.admin_blocks.inc');
 
-  // Setup theme.
-  drush_log(dt('Seting up theme'));
+  // Build site.
+  $command = 'fab drupal.build';
+  proc_close(proc_open($command, array(0 => STDIN, 1 => STDOUT, 2 => STDERR), $pipes, $root));
 
-  $theme_name = 'shortname'; //$shortname;
-  $theme_path = 'public/sites/all/themes/' . $theme_name;
-
-  drush_exec('cp -r %s %s', 'public/sites/all/themes/boots/boots_grid', $theme_path);
-  drush_op('rename', 'public/sites/all/themes/' . $theme_name . '/boots_grid.info', $theme_path . '/' . $theme_name . '.info');
-
-  $replacements = array(
-    'name =.*'        => 'name = ' . $sitename . ' Theme',
-    'description =.*' => 'description = ' . $sitename . ' Theme',
-    'base theme =.*'  => 'base theme = boots_grid',
-  );
-  drupal_installer_interpolate_values($theme_path . '/' . $theme_name . '.info', $replacements);
-
-  drupal_installer_interpolate_values($theme_path . '/template.php', array('boots_grid' => $theme_name));
+  drush_log(dt('OMBU optimized Drupal site successfully setup. You are ready to roll'), 'ok');
 }
 
 /**

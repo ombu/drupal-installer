@@ -9,7 +9,7 @@ env.repo_type = 'git'
 env.site_name = '__SITENAME__'
 env.db_db = '__DBNAME__'
 env.public_path = 'public'
-env.site_profile = 'ombuprofile'
+env.site_profile = '__PROFILENAME__'
 
 # Dev modules to install during site build
 env.dev_modules = 'devel devel_generate context_ui views_ui diff'

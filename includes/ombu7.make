@@ -5,37 +5,33 @@ core = 7.x
 api = 2
 projects[] = drupal
 
-; Profiles
-projects[ombuprofile][download][type]   = git
-projects[ombuprofile][download][url]    = git@github.com:ombu/drupal-ombuprofile.git
-projects[ombuprofile][download][branch] = feature-inherited
-projects[ombuprofile][type]             = profile
-
 ; Contrib Modules
-projects[views][subdir]                 = contrib
-projects[views_bulk_operations][subdir] = contrib
-projects[pathauto][subdir]              = contrib
-projects[redirect][subdir]              = contrib
-projects[context][subdir]               = contrib
-projects[oembed][subdir]                = contrib
-projects[entity][subdir]                = contrib
-projects[ctools][subdir]                = contrib
-projects[features][subdir]              = contrib
-projects[libraries][subdir]             = contrib
-projects[token][subdir]                 = contrib
-projects[xmlsitemap][subdir]            = contrib
-projects[htmlpurifier][subdir]          = contrib
-projects[devel][subdir]                 = contrib
-projects[diff][subdir]                  = contrib
-projects[link][subdir]                  = contrib
-projects[field_collection][subdir]      = contrib
+projects[bean][subdir]                    = contrib
+projects[context][subdir]                 = contrib
+projects[ctools][subdir]                  = contrib
+projects[devel][subdir]                   = contrib
+projects[diff][subdir]                    = contrib
+projects[entity][subdir]                  = contrib
+projects[features][subdir]                = contrib
+projects[field_collection][subdir]        = contrib
+projects[htmlpurifier][subdir]            = contrib
+projects[jquery_update][subdir]           = contrib
+projects[libraries][subdir]               = contrib
+projects[link][subdir]                    = contrib
+projects[oembed][subdir]                  = contrib
+projects[pathauto][subdir]                = contrib
+projects[redirect][subdir]                = contrib
+projects[token][subdir]                   = contrib
+projects[views][subdir]                   = contrib
+projects[views_bulk_operations][subdir]   = contrib
+projects[xmlsitemap][subdir]              = contrib
 
-projects[media][subdir]                 = contrib
-projects[media][version]                = 2.0-alpha1
-projects[file_entity][subdir]           = contrib
+projects[media][subdir]                   = contrib
+projects[media][version]                  = 2.0-alpha1
+projects[file_entity][subdir]             = contrib
 
-projects[wysiwyg][subdir]               = contrib
-projects[wysiwyg][patches][]            = https://drupal.org/files/wysiwyg-ckeditor-4.1853550.136.patch
+projects[wysiwyg][subdir]                 = contrib
+projects[wysiwyg][patches][]              = https://drupal.org/files/wysiwyg-ckeditor-4.1853550.136.patch
 
 ; OMBU Modules
 projects[ombucore][subdir]                = custom
@@ -74,14 +70,26 @@ projects[beancontainer][download][url]    = git@github.com:ombu/drupal-beanconta
 projects[beancontainer][download][branch] = master
 projects[beancontainer][type]             = module
 
+projects[tiles][subdir]                   = custom
+projects[tiles][download][type]           = git
+projects[tiles][download][url]            = git@github.com:ombu/drupal-tiles.git
+projects[tiles][download][branch]         = develop
+projects[tiles][type]                     = module
+
 projects[ombuslide][subdir]               = custom
 projects[ombuslide][download][type]       = git
 projects[ombuslide][download][url]        = git@github.com:ombu/drupal-ombuslide.git
 projects[ombuslide][download][branch]     = master
 projects[ombuslide][type]                 = module
 
+; OMBU Themes
+projects[boots][download][type]           = git
+projects[boots][download][url]            = git@github.com:ombu/drupal-boots.git
+projects[boots][download][branch]         = master
+projects[boots][type]                     = theme
+
 ; Libraries
 libraries[ckeditor][download][type]       = get
-libraries[ckeditor][download][url]        = http://download.cksource.com/CKEditor/CKEditor/CKEditor%204.2.1/ckeditor_4.2.1_standard.zip
+libraries[ckeditor][download][url]        = http://download.cksource.com/CKEditor/CKEditor/CKEditor%204.2.1/ckeditor_4.2.1_full.zip
 libraries[htmlpurifier][download][type]   = get
 libraries[htmlpurifier][download][url]    = http://htmlpurifier.org/releases/htmlpurifier-4.5.0.zip
