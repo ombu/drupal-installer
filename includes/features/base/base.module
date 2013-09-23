@@ -9,7 +9,7 @@ include_once 'base.features.inc';
 /**
  * Implements hook_tiles_widths().
  */
-function base_widths() {
+function base_tiles_widths() {
   return array(
     'ombucore' => array(
       'site_logo' => 2,
