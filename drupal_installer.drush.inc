@@ -59,6 +59,7 @@ function drupal_installer_drush_callback() {
     'public'
   ), array(
     '--no-gitinfofile',
+    '--working-copy',
   ));
 
   // Settings to replace in included files.
@@ -77,9 +78,10 @@ function drupal_installer_drush_callback() {
   drush_op('mkdir', 'public/sites/all/modules/features');
   drush_shell_exec('cp -r %s %s', $command['path'] . '/includes/features/base', $feature_path);
   foreach (glob($feature_path . '/*') as $filename) {
-    $destination = $feature_path . '/' . str_replace('base', $feature_name);
+    $filename = basename($filename);
+    $destination = $feature_path . '/' . str_replace('base', $feature_name, $filename);
     drush_op('rename', $feature_path . '/' . $filename, $destination);
-    drupal_installer_interpolate_values($destination, $settings);
+    drupal_installer_interpolate_values($destination, $settings + array('base' => $feature_name));
   }
   drush_log(dt('Feature setup'), 'ok');
 
@@ -90,8 +92,8 @@ function drupal_installer_drush_callback() {
   drush_op('mkdir', $theme_path);
 
   $info_file = <<<EOD
-name = $sitename Theme
-description = $sitename Theme
+name = $site_name Theme
+description = $site_name Theme
 base theme = boots_grid
 package = OMBU
 version = 7.x-0.1
@@ -181,6 +183,14 @@ EOD;
  * Helper function to interpolate values in a file.
  */
 function drupal_installer_interpolate_values($file, $values) {
+  if (drush_get_context('DRUSH_VERBOSE') || drush_get_context('DRUSH_SIMULATE')) {
+    drush_log(sprintf("Interpolating values in  %s", $file), 'debug');
+  }
+
+  if (drush_get_context('DRUSH_SIMULATE')) {
+    return TRUE;
+  }
+
   $contents = file_get_contents($file);
   $contents = str_replace(array_keys($values), array_values($values), $contents);
   file_put_contents($file, $contents);

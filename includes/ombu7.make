@@ -37,7 +37,7 @@ projects[wysiwyg][patches][]              = https://drupal.org/files/wysiwyg-cke
 projects[ombucore][subdir]                = custom
 projects[ombucore][download][type]        = git
 projects[ombucore][download][url]         = git@github.com:ombu/drupal-ombucore.git
-projects[ombucore][download][branch]      = master
+projects[ombucore][download][branch]      = develop
 projects[ombucore][type]                  = module
 
 projects[ombucleanup][subdir]             = custom
