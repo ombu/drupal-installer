@@ -54,8 +54,9 @@ function drupal_installer_drush_callback() {
   }
 
   // Build drupal site with make file, keeping repo directories
+  $make_file = $command['path'] . '/includes/ombu7.make';
   drush_invoke_process('@none', 'make', array(
-    $command['path'] . '/includes/ombu7.make',
+    $make_file,
     'public'
   ), array(
     '--no-gitinfofile',
@@ -73,9 +74,14 @@ function drupal_installer_drush_callback() {
   );
 
   // Setup default feature.
-  $feature_name = $short_name . '_base';
-  $feature_path = 'public/sites/all/modules/features/' . $feature_name;
+  if (drush_get_option('demo')) {
+    $feature_name = 'tiles_base';
+  }
+  else {
+    $feature_name = $short_name . '_base';
+  }
   drush_op('mkdir', 'public/sites/all/modules/features');
+  $feature_path = 'public/sites/all/modules/features/' . $feature_name;
   drush_shell_exec('cp -r %s %s', $command['path'] . '/includes/features/base', $feature_path);
   foreach (glob($feature_path . '/*') as $filename) {
     $filename = basename($filename);
@@ -171,6 +177,34 @@ EOD;
   }
   drush_op('copy', 'public/sites/default/settings.development.php', 'public/sites/default/settings.php');
   drush_op('copy', 'public/sites/all/modules/custom/ombudashboard/ombudashboard.admin_blocks.inc.example', 'public/sites/default/ombudashboard.admin_blocks.inc');
+
+  // Setup git.
+  drush_log(dt('Initializing git repo'), 'ok');
+  drush_shell_exec('git init');
+
+  // .gitignore file.
+  $gitignore = <<<EOD
+sites/default/settings.php
+sites/default/files
+EOD;
+  drush_op('file_put_contents', '.gitignore', $gitignore);
+
+  drush_log(dt('Setting up submodules'));
+
+  // Parse makefile to get correct branches for each submodule.
+  $info = make_parse_info_file($make_file);
+  drush_shell_exec('git submodule add -b %s git@github.com:ombu/drupal-ombucore.git public/sites/all/modules/custom/ombucore', $info['projects']['ombucore']['download']['branch']);
+  drush_shell_exec('git submodule add -b %s git@github.com:ombu/drupal-ombucleanup.git public/sites/all/modules/custom/ombucleanup', $info['projects']['ombucleanup']['download']['branch']);
+  drush_shell_exec('git submodule add -b %s git@github.com:ombu/drupal-ombudashboard.git public/sites/all/modules/custom/ombudashboard', $info['projects']['ombudashboard']['download']['branch']);
+  drush_shell_exec('git submodule add -b %s git@github.com:ombu/drupal-ombuseo.git public/sites/all/modules/custom/ombuseo', $info['projects']['ombuseo']['download']['branch']);
+  drush_shell_exec('git submodule add -b %s git@github.com:ombu/drupal-ombubeans.git public/sites/all/modules/custom/ombubeans', $info['projects']['ombubeans']['download']['branch']);
+  drush_shell_exec('git submodule add -b %s git@github.com:ombu/drupal-beancontainer.git public/sites/all/modules/custom/beancontainer', $info['projects']['beancontainer']['download']['branch']);
+  drush_shell_exec('git submodule add -b %s git@github.com:ombu/drupal-tiles.git public/sites/all/modules/custom/tiles', $info['projects']['tiles']['download']['branch']);
+  drush_shell_exec('git submodule add -b %s git@github.com:ombu/drupal-ombuslide.git public/sites/all/modules/custom/ombuslide', $info['projects']['ombuslide']['download']['branch']);
+  drush_shell_exec('git submodule add -b %s git@github.com:ombu/drupal-boots.git public/sites/all/themes/boots', $info['projects']['boots']['download']['branch']);
+
+  drush_shell_exec('git add public fabfile.py README.md .gitignore');
+  drush_shell_exec('git commit -m "Initial install of OMBU Core"');
 
   // Build site.
   $command = 'fab drupal.build';
