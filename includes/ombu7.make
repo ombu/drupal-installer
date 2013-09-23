@@ -31,7 +31,7 @@ projects[media][version]                  = 2.0-alpha1
 projects[file_entity][subdir]             = contrib
 
 projects[wysiwyg][subdir]                 = contrib
-projects[wysiwyg][patches][]              = https://drupal.org/files/wysiwyg-ckeditor-4.1853550.136.patch
+projects[wysiwyg][patch][]              = https://drupal.org/files/wysiwyg-ckeditor-4.1853550.136.patch
 
 ; OMBU Modules
 projects[ombucore][subdir]                = custom
