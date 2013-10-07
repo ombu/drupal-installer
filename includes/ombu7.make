@@ -19,7 +19,6 @@ projects[htmlpurifier][subdir]            = contrib
 projects[jquery_update][subdir]           = contrib
 projects[libraries][subdir]               = contrib
 projects[link][subdir]                    = contrib
-projects[oembed][subdir]                  = contrib
 projects[pathauto][subdir]                = contrib
 projects[redirect][subdir]                = contrib
 projects[token][subdir]                   = contrib
@@ -30,6 +29,8 @@ projects[xmlsitemap][subdir]              = contrib
 projects[media][subdir]                   = contrib
 projects[media][version]                  = 2.0-alpha1
 projects[file_entity][subdir]             = contrib
+projects[oembed][subdir]                  = contrib
+projects[oembed][version]                 = 1
 
 projects[special_menu_items][subdir]      = contrib
 projects[special_menu_items][patch][]     = https://drupal.org/files/special_menu_items-2102509-1.patch
