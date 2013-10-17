@@ -209,7 +209,7 @@ EOD;
 
   // Build site.
   $command = 'fab drupal.build';
-  proc_close(proc_open($command, array(0 => STDIN, 1 => STDOUT, 2 => STDERR), $pipes, $root));
+  proc_close(proc_open($command, array(0 => STDIN, 1 => STDOUT, 2 => STDERR), $pipes));
 
   drush_log(dt('OMBU optimized Drupal site successfully setup. You are ready to roll'), 'ok');
 }
