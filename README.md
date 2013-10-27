@@ -1,11 +1,10 @@
 Drupal Installation Script
 ==========================
-Install OMBU optimized Drupal site in [DIRECTORY] or the current directory if
-no directory is given.
+Install OMBU optimized Drupal site in the current directory
 
 Usage
 -----
-drupalbuild [OPTION]... [DIRECTORY]
+drush drupal-installer [OPTION]...
 
   Options:
 
