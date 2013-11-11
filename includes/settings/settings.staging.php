@@ -25,3 +25,8 @@ ini_set('session.gc_maxlifetime', 200000);
 ini_set('session.cookie_lifetime', 2000000);
 
 $conf['environment'] = 'staging';
+
+// Caching on staging.
+$conf['cache'] = 1;
+$conf['preprocess_css'] = 1;
+$conf['preprocess_js'] = 1;
