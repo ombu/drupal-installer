@@ -28,9 +28,11 @@ projects[views_bulk_operations][subdir]   = contrib
 projects[xmlsitemap][subdir]              = contrib
 
 projects[htmlpurifier][subdir]            = contrib
+projects[htmlpurifier][version]           = 2.x-dev
 
 projects[media][subdir]                   = contrib
 projects[media][version]                  = 2.0-alpha1
+projects[media][patch][]                  = https://drupal.org/files/media-2109495.patch
 projects[file_entity][subdir]             = contrib
 projects[oembed][subdir]                  = contrib
 projects[oembed][version]                 = 1
