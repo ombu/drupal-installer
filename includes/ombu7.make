@@ -8,6 +8,7 @@ projects[] = drupal
 ; Contrib Modules
 projects[bean][subdir]                    = contrib
 projects[context][subdir]                 = contrib
+projects[chosen][subdir]                  = contrib
 projects[ctools][subdir]                  = contrib
 projects[devel][subdir]                   = contrib
 projects[diff][subdir]                    = contrib
@@ -32,6 +33,10 @@ projects[date_popup_authored][subdir]     = contrib
 
 projects[htmlpurifier][subdir]            = contrib
 projects[htmlpurifier][version]           = 2.x-dev
+
+projects[chosen_ajax][subdir]             = contrib
+projects[chosen_ajax][patch][]            = https://drupal.org/files/update-to-chosen-1.0-2086167-1.patch
+projects[chosen_ajax][patch][]            = https://drupal.org/files/issues/2188805-1-chosen-ajax-jquery.patch
 
 projects[media][subdir]                   = contrib
 projects[media][version]                  = 2.0-alpha1
