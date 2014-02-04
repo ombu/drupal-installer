@@ -117,3 +117,7 @@ libraries[ckeditor][download][type]       = get
 libraries[ckeditor][download][url]        = http://download.cksource.com/CKEditor/CKEditor/CKEditor%204.2.1/ckeditor_4.2.1_full.zip
 libraries[htmlpurifier][download][type]   = get
 libraries[htmlpurifier][download][url]    = http://htmlpurifier.org/releases/htmlpurifier-4.5.0.zip
+libraries[chosen][download][type]         = get
+libraries[chosen][download][url]          = https://github.com/harvesthq/chosen/releases/download/1.0.0/chosen_v1.0.0.zip
+libraries[chosen][directory_name]         = chosen
+
