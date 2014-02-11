@@ -92,11 +92,11 @@ projects[ombuslide][download][url]        = git@github.com:ombu/drupal-ombuslide
 projects[ombuslide][download][branch]     = 0.2
 projects[ombuslide][type]                 = module
 
-projects[ombuslide][subdir]               = custom
-projects[ombuslide][download][type]       = git
-projects[ombuslide][download][url]        = git@github.com:ombu/drupal-customauthor.git
-projects[ombuslide][download][branch]     = master
-projects[ombuslide][type]                 = module
+projects[customauthor][subdir]            = custom
+projects[customauthor][download][type]    = git
+projects[customauthor][download][url]     = git@github.com:ombu/drupal-customauthor.git
+projects[customauthor][download][branch]  = master
+projects[customauthor][type]              = module
 
 ; OMBU Themes
 projects[boots][download][type]           = git
