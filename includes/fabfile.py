@@ -14,7 +14,7 @@ env.public_path = 'public'
 env.site_profile = '__PROFILENAME__'
 
 # Dev modules to install during site build
-env.dev_modules = 'devel devel_generate context_ui views_ui diff'
+env.dev_modules = 'devel devel_generate context_ui views_ui diff bean_admin_ui'
 
 # Host settings
 @task
