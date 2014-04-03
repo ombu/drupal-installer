@@ -8,7 +8,7 @@ projects[] = drupal
 ; Contrib Modules
 projects[bean][subdir]                    = contrib
 projects[context][subdir]                 = contrib
-projects[chosen][subdir]                  = contrib
+projects[select2][subdir]                  = contrib
 projects[ctools][subdir]                  = contrib
 projects[devel][subdir]                   = contrib
 projects[diff][subdir]                    = contrib
@@ -34,13 +34,12 @@ projects[date_popup_authored][subdir]     = contrib
 projects[htmlpurifier][subdir]            = contrib
 projects[htmlpurifier][version]           = 2.x-dev
 
-projects[chosen_ajax][subdir]             = contrib
-projects[chosen_ajax][patch][]            = https://drupal.org/files/update-to-chosen-1.0-2086167-1.patch
-projects[chosen_ajax][patch][]            = https://drupal.org/files/issues/2188805-1-chosen-ajax-jquery.patch
-
 projects[media][subdir]                   = contrib
 projects[media][version]                  = 2.0-alpha1
-projects[media][patch][]                  = https://drupal.org/files/media-2109495.patch
+; Combined patch to make media work with jQuery 1.10
+; See https://gist.github.com/duellj/9957265
+projects[media][patch][]                  = https://gist.githubusercontent.com/duellj/9957265/raw/b7f2ba0e222e52a6b5a65dfced020ac6adcd4dc5/gistfile1.diff
+
 projects[file_entity][subdir]             = contrib
 projects[oembed][subdir]                  = contrib
 projects[oembed][version]                 = 1
@@ -67,7 +66,7 @@ projects[ombucleanup][type]               = module
 projects[ombudashboard][subdir]           = custom
 projects[ombudashboard][download][type]   = git
 projects[ombudashboard][download][url]    = git@github.com:ombu/drupal-ombudashboard.git
-projects[ombudashboard][download][tag]    = 0.2
+projects[ombudashboard][download][tag]    = 0.3
 projects[ombudashboard][type]             = module
 
 projects[ombuseo][subdir]                 = custom
@@ -117,7 +116,7 @@ libraries[ckeditor][download][type]       = get
 libraries[ckeditor][download][url]        = http://download.cksource.com/CKEditor/CKEditor/CKEditor%204.2.1/ckeditor_4.2.1_full.zip
 libraries[htmlpurifier][download][type]   = get
 libraries[htmlpurifier][download][url]    = http://htmlpurifier.org/releases/htmlpurifier-4.5.0.zip
-libraries[chosen][download][type]         = get
-libraries[chosen][download][url]          = https://github.com/harvesthq/chosen/releases/download/1.0.0/chosen_v1.0.0.zip
-libraries[chosen][directory_name]         = chosen
+libraries[select2][download][type]         = get
+libraries[select2][download][url]          = https://github.com/ivaynberg/select2/archive/3.4.5.zip
+libraries[select2][directory_name]         = chosen
 
