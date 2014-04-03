@@ -28,7 +28,6 @@ projects[views][subdir]                   = contrib
 projects[views_bulk_operations][subdir]   = contrib
 projects[xmlsitemap][subdir]              = contrib
 projects[date][subdir]                    = contrib
-projects[date_popup][subdir]              = contrib
 projects[date_popup_authored][subdir]     = contrib
 
 projects[htmlpurifier][subdir]            = contrib

@@ -50,18 +50,22 @@ function drupal_installer_drush_callback() {
   // Check if build directory exists
   if (file_exists('public')) {
     drush_set_error(dt("Aborting: public directory already exists, delete first before running this command"));
-    return;
+    return FALSE;
   }
 
   // Build drupal site with make file, keeping repo directories
   $make_file = $command['path'] . '/includes/ombu7.make';
-  drush_invoke_process('@none', 'make', array(
+  $return = drush_invoke_process('@none', 'make', array(
     $make_file,
     'public'
   ), array(
     '--no-gitinfofile',
     '--working-copy',
   ));
+  if (!$return || $return['error_status']) {
+    drush_set_error(dt('Error building make file'));
+    return FALSE;
+  }
 
   // Settings to replace in included files.
   $settings = array(
