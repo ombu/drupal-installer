@@ -54,13 +54,13 @@ projects[wysiwyg][patch][]                = https://drupal.org/files/wysiwyg-cke
 projects[ombucore][subdir]                = custom
 projects[ombucore][download][type]        = git
 projects[ombucore][download][url]         = git@github.com:ombu/drupal-ombucore.git
-projects[ombucore][download][branch]      = develop
+projects[ombucore][download][tag]         = 0.2
 projects[ombucore][type]                  = module
 
 projects[ombucleanup][subdir]             = custom
 projects[ombucleanup][download][type]     = git
 projects[ombucleanup][download][url]      = git@github.com:ombu/drupal-ombucleanup.git
-projects[ombucleanup][download][tag]      = 0.2
+projects[ombucleanup][download][tag]      = 0.3
 projects[ombucleanup][type]               = module
 
 projects[ombudashboard][subdir]           = custom
@@ -72,13 +72,13 @@ projects[ombudashboard][type]             = module
 projects[ombuseo][subdir]                 = custom
 projects[ombuseo][download][type]         = git
 projects[ombuseo][download][url]          = git@github.com:ombu/drupal-ombuseo.git
-projects[ombuseo][download][tag]          = 0.2
+projects[ombuseo][download][tag]          = 0.3
 projects[ombuseo][type]                   = module
 
 projects[ombubeans][subdir]               = custom
 projects[ombubeans][download][type]       = git
 projects[ombubeans][download][url]        = git@github.com:ombu/drupal-ombubeans.git
-projects[ombubeans][download][branch]     = develop
+projects[ombubeans][download][tag]        = 0.2
 projects[ombubeans][type]                 = module
 
 projects[beancontainer][subdir]           = custom
@@ -90,25 +90,25 @@ projects[beancontainer][type]             = module
 projects[tiles][subdir]                   = custom
 projects[tiles][download][type]           = git
 projects[tiles][download][url]            = git@github.com:ombu/drupal-tiles.git
-projects[tiles][download][tag]            = 0.2
+projects[tiles][download][tag]            = 0.3
 projects[tiles][type]                     = module
 
 projects[ombuslide][subdir]               = custom
 projects[ombuslide][download][type]       = git
 projects[ombuslide][download][url]        = git@github.com:ombu/drupal-ombuslide.git
-projects[ombuslide][download][branch]     = 0.2
+projects[ombuslide][download][tag]        = 0.2
 projects[ombuslide][type]                 = module
 
 projects[customauthor][subdir]            = custom
 projects[customauthor][download][type]    = git
 projects[customauthor][download][url]     = git@github.com:ombu/drupal-customauthor.git
-projects[customauthor][download][branch]  = master
+projects[customauthor][download][tag]     = 0.1
 projects[customauthor][type]              = module
 
 ; OMBU Themes
 projects[boots][download][type]           = git
 projects[boots][download][url]            = git@github.com:ombu/drupal-boots.git
-projects[boots][download][branch]         = master
+projects[boots][download][tag]            = 0.3
 projects[boots][type]                     = theme
 
 ; Libraries
