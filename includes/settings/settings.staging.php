@@ -24,5 +24,9 @@ ini_set('session.gc_divisor', 100);
 ini_set('session.gc_maxlifetime', 200000);
 ini_set('session.cookie_lifetime', 2000000);
 
-// $conf['googlemap_api_key'] = '';
 $conf['environment'] = 'staging';
+
+// Caching on staging.
+$conf['cache'] = 1;
+$conf['preprocess_css'] = 1;
+$conf['preprocess_js'] = 1;
