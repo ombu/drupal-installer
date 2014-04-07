@@ -26,7 +26,7 @@ function drupal_installer_drush_command() {
       ),
       'site-name' => 'Defaults to Site-Install',
       'site-mail' => 'From: for system mailings. Defaults to noreply@ombuweb.com',
-      'demo' => 'Install a demo tiles site',
+      'demo' => 'Install a demo site',
     ),
     'aliases' => array('di'),
     'bootstrap' => DRUSH_BOOTSTRAP_DRUSH,
@@ -54,7 +54,7 @@ function drupal_installer_drush_callback() {
   }
 
   // Build drupal site with make file, keeping repo directories
-  $make_file = $command['path'] . '/includes/ombu7.make';
+  $make_file = $command['path'] . '/includes/ombucore.make';
   $return = drush_invoke_process('@none', 'make', array(
     $make_file,
     'public'
@@ -79,7 +79,7 @@ function drupal_installer_drush_callback() {
 
   // Setup default feature.
   if (drush_get_option('demo')) {
-    $feature_name = 'tiles_base';
+    $feature_name = 'ombudemo_base';
   }
   else {
     $feature_name = $short_name . '_base';
@@ -126,10 +126,10 @@ EOD;
   // Setup profile. If spinning up a demo site, load the tiles profile (which
   // sets up default blocks).
   if (drush_get_option('demo')) {
-    $profile_name = 'tiles_profile';
+    $profile_name = 'ombudemo_profile';
     $settings['__PROFILENAME__'] = $profile_name;
 
-    drush_shell_exec('cp -r %s %s', $command['path'] . '/includes/profiles/tiles_profile', 'public/profiles/tiles_profile');
+    drush_shell_exec('cp -r %s %s', $command['path'] . '/includes/profiles/ombudemo_profile', 'public/profiles/ombudemo_profile');
   }
   else {
     $profile_name = $short_name . '_profile';
