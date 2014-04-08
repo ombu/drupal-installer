@@ -2,6 +2,14 @@ Drupal Installation Script
 ==========================
 Install OMBU optimized Drupal site in the current directory
 
+Requirements
+------------
+
+- In order to install the site after build,
+  [butter](https://github.com/ombu/butter) is required, since the site is built
+  with `fab drupal.build`. This isn't needed if the `-n` flag is passed to the
+  installer.
+
 Usage
 -----
 drush drupal-installer [OPTION]...
@@ -23,7 +31,7 @@ drush drupal-installer [OPTION]...
 
 Example
 -------
-The following will build Drupal into the drupal/ directory using the database 
+The following will build Drupal into the current directory using the database 
 *database_name*:
 
-> drupalbuild -d database_name -u user -p -s 'Site Name' -e test@test.com -x drupal
+> drupalbuild -d database_name -u user -p -s 'Site Name' -e test@test.com -x
