@@ -1,0 +1,11 @@
+{
+  "name": "ombu/drupal-installer",
+  "description": "Install OMBU optimized Drupal sites",
+  "autoload": {
+    "psr-0": { "DrupalInstaller": "lib/" }
+  },
+  "require": {
+    "symfony/yaml": "2.1.*"
+  }
+}
+
