@@ -1,6 +1,0 @@
-name = __SITENAME__ Profile
-description = Default profile for __SITENAME__
-version = 7.x-0.1
-core = 7.x
-
-dependencies[] = ombucore
