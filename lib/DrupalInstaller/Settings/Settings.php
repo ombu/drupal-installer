@@ -137,6 +137,7 @@ class Settings {
     $pwd = getcwd();
     chdir($cache_path);
 
+    drush_shell_exec('git fetch origin');
     drush_shell_exec('git fetch --tags origin');
 
     // Retrieve passed version, defaulting to the tip of origin/master.
