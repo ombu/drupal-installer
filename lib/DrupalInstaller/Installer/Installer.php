@@ -114,7 +114,9 @@ class Installer {
       $this->settings->interpolate($profile_path . '/config/modules.yml');
     }
     else {
+      $this->settings->profile = $this->settings->shortName;
       $profile_name = $this->settings->shortName . '_profile';
+
       $values['__PROFILENAME__'] = $profile_name;
       $profile_path = 'public/profiles/' . $profile_name;
 
@@ -132,6 +134,7 @@ class Installer {
 
       drush_op('mkdir', $profile_path . '/config');
 
+      $theme_name = $this->settings->shortName . '_theme';
       $theme_file = <<<EOD
 add:
   default_theme: $theme_name
