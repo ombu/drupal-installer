@@ -124,7 +124,7 @@ class Settings {
    */
   protected function setupManifest() {
     // @todo: allow this to be changed to other URLs or even local paths.
-    $manifest_repo = 'git@github.com:ombu/drupal-ombucore.git';
+    $manifest_repo = 'https://github.com/ombucore/drupal-ombucore.git';
 
     // Store repo in drush cache so it doesn't have to be cloned every time.
     $cache_path = drush_directory_cache('drupal_installer') . '/ombucore';
