@@ -16,7 +16,7 @@ function drupal_installer_drush_command() {
     'callback' => 'drupal_installer_drush_callback',
     'options' => array(
       'db-url' => array(
-        'description' => 'A Drupal 6 style database URL. Only required for initial install - not re-install.',
+        'description' => 'A Drupal 6 style database URL.',
         'example-value' => 'mysql://root:pass@host/db',
         'required' => TRUE,
       ),

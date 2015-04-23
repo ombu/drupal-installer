@@ -16,22 +16,31 @@ drush drupal-installer [OPTION]...
 
   Options:
 
-    -d [NAME]      Database name. If site is set to install and this option isn't given,
-                   then you will be prompted to enter this during the install process.
-    -u [USER]      Database user. If site is set to install and this option isn't given,
-                   then you will be prompted to enter this during the install process.
-    -p             Prompt for database password.
-    -s [SITE]      Site name. If not set, then will default to "Site Name"
-    -e [EMAIL]     Site email. If not set, then will default to "example@ombuweb.com"
-    -m [SHORTNAME] Site shortname. Used to generate paths and filenames. If not set,
-                   then will default to the database name.
-    -x             Install dev modules and data.
-    -n             No install; don't install Drupal site after downloading it
-    -h             This help
+   --db-url=<mysql://root:pass@host/db>      A Drupal 6 style database URL. Required.
+   --demo                                    Install a demo site
+   --makefiles=<ombucore,publishing>         What Drush makefiles to run prior
+                                             to installing Drupal. Defaults to
+                                             "ombucore" but if specified,
+                                             "ombucore" makefile will not be
+                                             run.
+   --profile=<ombudemo>                      What profile to install.
+                                             Defaults to "default"
+   --short-name=<my_site>                    The short name for the project.
+                                             Will be used to name theme,
+                                             profile, and base feature. If not
+                                             set then the database name will be
+                                             used. Only letter, numbers and
+                                             underscores are allowed.
+   --site-mail                               From: for system mailings.
+                                             Defaults to noreply@ombuweb.com
+   --site-name                               Defaults to Site-Install
+   --version=<0.6>                           A valid reference for the ombucore
+                                             repo, i.e. tag or branch. Defaults
+                                             to "origin/master"
 
 Example
 -------
 The following will build Drupal into the current directory using the database 
 *database_name*:
 
-> drupalbuild -d database_name -u user -p -s 'Site Name' -e test@test.com -x
+> drush drupal-installer --db-url=mysql://root:pass@localhost/test --site-name="Test Site" --version=release/0.8 --makefiles=ombucore,publishing
