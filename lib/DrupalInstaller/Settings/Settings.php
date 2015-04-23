@@ -140,14 +140,18 @@ class Settings {
     drush_shell_exec('git fetch origin');
     drush_shell_exec('git fetch --tags origin');
 
-    // Retrieve passed version, defaulting to the tip of origin/master.
+    // Retrieve passed version, defaulting to the tip of origin/master. Try to
+    // parse revision both as a remote branch (origin/VERSION) and a tag
+    // (VERSION).
     $version = drush_get_option('version', 'master');
-    if (!drush_shell_exec('git rev-parse origin/%s', $version)) {
+    if (!drush_shell_exec('git rev-parse origin/%s', $version) && !drush_shell_exec('git rev-parse %s', $version)) {
       throw new SettingsException('Unknown ombucore version ' . $version);
     }
     $version = drush_shell_exec_output();
 
-    drush_shell_exec('git reset --hard %s', $version[0]);
+    if (!drush_shell_exec('git reset --hard %s', $version[0])) {
+      throw new SettingsException('Unable to checkout ombucore version ' . $version);
+    }
     chdir($pwd);
 
     $this->manifestPath = $cache_path . '/';
