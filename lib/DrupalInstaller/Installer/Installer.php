@@ -255,7 +255,7 @@ EOD;
     }
 
     drush_shell_exec('git add public fabfile.py README.md .gitignore');
-    drush_shell_exec('git add -f public/sites/default/settings.*');
+    drush_shell_exec('git add -f public/sites/default/settings.*.php');
     drush_shell_exec('git commit -m "Initial install of OMBU Core"');
   }
 }
