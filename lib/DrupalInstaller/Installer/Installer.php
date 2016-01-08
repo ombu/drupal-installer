@@ -182,13 +182,11 @@ EOD;
 
     drush_op('mkdir', $theme_path);
 
-    $info_file = $theme_path . '/' . $theme_name . '.info';
-    drush_shell_exec('cp -r %s %s', $this->settings->manifestPath . '/build/theme/default_theme.info', $info_file);
-    $this->settings->interpolate($info_file);
+    drush_shell_exec('cp -r %s/* %s', $this->settings->manifestPath . '/build/theme', $theme_path);
 
-    drush_op('mkdir', $theme_path . '/css');
-    drush_op('touch', $theme_path . '/css/style.css');
-    drush_op('touch', $theme_path . '/css/style.less');
+    $info_file = $theme_path . '/' . $theme_name . '.info';
+    drush_shell_exec('mv %s %s', $this->settings->manifestPath . '/build/theme/default_theme.info', $info_file);
+    $this->settings->interpolate($info_file);
 
     drush_log(dt('Theme setup'), 'ok');
   }
