@@ -58,7 +58,15 @@ class Settings {
    * Contructor.
    */
   public function __construct() {
-    $this->dbInfo = _drush_sql_get_db_spec();
+    // The function _drush_sql_get_db_spec() doesn't exist in Drush 7.x+, so
+    // have to use alternate means of getting db spec.
+    if (function_exists('_drush_sql_get_db_spec')) {
+      $this->dbInfo = _drush_sql_get_db_spec();
+    }
+    else {
+      $this->dbInfo = drush_sql_get_class()->db_spec();
+    }
+
     $this->shortName = drush_get_option('short-name', $this->dbInfo['database']);
 
     $this->settings = array(
